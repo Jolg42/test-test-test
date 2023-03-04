@@ -30,7 +30,7 @@ jobs:
           git checkout origin/$branch
           git status
           git merge origin/main --strategy=ours --allow-unrelated-histories
-          git push
+          git push origin HEAD:$branch
           
       - name: Add reaction
         uses: peter-evans/create-or-update-comment@v2
