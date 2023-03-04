@@ -6,6 +6,7 @@ jobs:
   slashCommandDispatch:
     runs-on: ubuntu-latest
     steps:
+      # https://github.com/peter-evans/slash-command-dispatch
       - name: Slash Command Dispatch
         uses: peter-evans/slash-command-dispatch@v3
         with:
