@@ -6,6 +6,22 @@ jobs:
   redo:
     runs-on: ubuntu-latest
     steps:
+      - name: Dump the client payload context
+        env:
+          PAYLOAD_CONTEXT: ${{ toJson(github.event.client_payload) }}
+        run: echo "$PAYLOAD_CONTEXT"
+        
+      - name: Output command and arguments
+        run: |
+          echo ${{ github.event.client_payload.slash_command.command }}
+          echo ${{ github.event.client_payload.slash_command.args.all }}
+          echo ${{ github.event.client_payload.slash_command.args.unnamed.all }}
+          echo ${{ github.event.client_payload.slash_command.args.unnamed.arg1 }}
+          echo ${{ github.event.client_payload.slash_command.args.unnamed.arg2 }}
+          echo ${{ github.event.client_payload.slash_command.args.named.region }}
+          echo ${{ github.event.client_payload.slash_command.args.named.branch }}
+          echo ${{ github.event.client_payload.slash_command.args.named.reason }}
+          
       - name: Get the target branch name
         id: vars
         run: |
