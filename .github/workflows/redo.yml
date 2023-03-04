@@ -25,7 +25,7 @@ jobs:
           git fetch origin
           git checkout origin/$branch
           git status
-          git merge origin/main --strategy=ours
+          git merge origin/main --strategy=ours --allow-unrelated-histories
           git push
           
       - name: Add reaction
