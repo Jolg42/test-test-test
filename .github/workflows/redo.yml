@@ -19,21 +19,11 @@ jobs:
           repository: ${{ github.event.client_payload.github.payload.repository.full_name }}
           ref: ${{ steps.vars.outputs.branch }}
 
-      - name: Do something
+      - name: git merge origin/main --strategy=ours & git push
         run: |
-          echo "Do something"
-          
-          git format-patch main -o patches
-          
-          # Reset branch completely
-          git reset --hard HEAD
-          
-          # Merge main
-          git rebase main
-          
-          git apply patches/*.patch
-          git add -A
-          git commit -m 'fresh commit'
+          git status
+          git merge origin/main --strategy=ours
+          git push
           
       - name: Add reaction
         uses: peter-evans/create-or-update-comment@v2
