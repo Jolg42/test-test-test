@@ -1,0 +1,44 @@
+name: Redo PR by force pushing it
+on:
+  repository_dispatch:
+    types: [redo]
+jobs:
+  redo:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get the target branch name
+        id: vars
+        run: |
+          branch=${{ github.event.client_payload.slash_command.args.named.branch }}
+          if [[ -z "$branch" ]]; then branch="main"; fi
+          echo "branch=$branch" >> $GITHUB_OUTPUT
+
+      - uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          repository: ${{ github.event.client_payload.github.payload.repository.full_name }}
+          ref: ${{ steps.vars.outputs.branch }}
+
+      - name: Do something
+        run: |
+          echo "Do something"
+          
+          git format-patch main -o patches
+          
+          # Reset branch completely
+          git reset --hard HEAD
+          
+          # Merge main
+          git rebase main
+          
+          git apply patches/*.patch
+          git add -A
+          git commit -m 'fresh commit'
+          
+      - name: Add reaction
+        uses: peter-evans/create-or-update-comment@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          repository: ${{ github.event.client_payload.github.payload.repository.full_name }}
+          comment-id: ${{ github.event.client_payload.github.payload.comment.id }}
+          reaction-type: hooray
