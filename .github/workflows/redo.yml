@@ -1,7 +1,7 @@
-name: Redo PR by force pushing it
+name: redo-command
 on:
   repository_dispatch:
-    types: [redo]
+    types: [redo-command]
 jobs:
   redo:
     runs-on: ubuntu-latest
