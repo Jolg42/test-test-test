@@ -17,11 +17,12 @@ jobs:
 
       - name: Merge ours
         run: |
+          set -x
           git status
           branch=${{ github.event.client_payload.pull_request.head.ref }}
           if [[ -z "$branch" ]]; then exit 1; fi
 
-          git checkout $BRANCH
+          git checkout $branch
           git status
           git merge origin/main --strategy=ours
           git push
